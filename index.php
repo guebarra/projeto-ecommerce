@@ -6,9 +6,12 @@ $app = new \Slim\Slim();
 
 $app->config('debug', true);
 
-$app->get('/', function() {
+$app->get('/select', function() {
     
-	echo "OK";
+	$sql = new DB\Sql();
+	$results = $sql->select("SELECT * FROM produto");
+
+	echo json_encode($results);
 
 });
 

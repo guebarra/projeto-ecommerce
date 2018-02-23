@@ -16,30 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `pedido`
+-- Table structure for table `pc`
 --
 
-DROP TABLE IF EXISTS `pedido`;
+DROP TABLE IF EXISTS `pc`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `pedido` (
-  `idpedido` int(11) NOT NULL AUTO_INCREMENT,
-  `dt_pedido` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `status` varchar(45) NOT NULL,
+CREATE TABLE `pc` (
+  `produto_idproduto` int(11) NOT NULL,
   `carrinho_idcarrinho` int(11) NOT NULL,
-  PRIMARY KEY (`idpedido`),
-  KEY `fk_pedido_carrinho1_idx` (`carrinho_idcarrinho`),
-  CONSTRAINT `fk_pedido_carrinho1` FOREIGN KEY (`carrinho_idcarrinho`) REFERENCES `carrinho` (`idcarrinho`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  PRIMARY KEY (`produto_idproduto`,`carrinho_idcarrinho`),
+  KEY `fk_produto_has_carrinho_carrinho1_idx` (`carrinho_idcarrinho`),
+  KEY `fk_produto_has_carrinho_produto1_idx` (`produto_idproduto`),
+  CONSTRAINT `fk_produto_has_carrinho_carrinho1` FOREIGN KEY (`carrinho_idcarrinho`) REFERENCES `carrinho` (`idcarrinho`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_produto_has_carrinho_produto1` FOREIGN KEY (`produto_idproduto`) REFERENCES `produto` (`idproduto`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `pedido`
+-- Dumping data for table `pc`
 --
 
-LOCK TABLES `pedido` WRITE;
-/*!40000 ALTER TABLE `pedido` DISABLE KEYS */;
-/*!40000 ALTER TABLE `pedido` ENABLE KEYS */;
+LOCK TABLES `pc` WRITE;
+/*!40000 ALTER TABLE `pc` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pc` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-23 15:03:09
+-- Dump completed on 2018-02-23 19:28:55
