@@ -16,33 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `produto`
+-- Table structure for table `pedido`
 --
 
-DROP TABLE IF EXISTS `produto`;
+DROP TABLE IF EXISTS `pedido`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `produto` (
-  `idproduto` int(11) NOT NULL AUTO_INCREMENT,
-  `nome_prod` varchar(45) NOT NULL,
-  `descricao` varchar(256) NOT NULL,
-  `preco` float NOT NULL,
-  `dt_cad` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `categoria_idcategoria` int(11) NOT NULL,
-  PRIMARY KEY (`idproduto`),
-  KEY `fk_produto_categoria_idx` (`categoria_idcategoria`),
-  CONSTRAINT `fk_produto_categoria` FOREIGN KEY (`categoria_idcategoria`) REFERENCES `categoria` (`idcategoria`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+CREATE TABLE `pedido` (
+  `idpedido` int(11) NOT NULL AUTO_INCREMENT,
+  `dt_pedido` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status` varchar(45) NOT NULL,
+  `carrinho_idcarrinho` int(11) NOT NULL,
+  PRIMARY KEY (`idpedido`),
+  KEY `fk_pedido_carrinho1_idx` (`carrinho_idcarrinho`),
+  CONSTRAINT `fk_pedido_carrinho1` FOREIGN KEY (`carrinho_idcarrinho`) REFERENCES `carrinho` (`idcarrinho`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `produto`
+-- Dumping data for table `pedido`
 --
 
-LOCK TABLES `produto` WRITE;
-/*!40000 ALTER TABLE `produto` DISABLE KEYS */;
-INSERT INTO `produto` VALUES (1,'Celular','Android 7.0',999,'2018-02-23 17:32:50',1),(2,'Chuteira','Nike Total 90',129,'2018-02-23 17:32:50',3),(3,'Sofa','Canto',599,'2018-02-23 17:32:50',2);
-/*!40000 ALTER TABLE `produto` ENABLE KEYS */;
+LOCK TABLES `pedido` WRITE;
+/*!40000 ALTER TABLE `pedido` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -54,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-23 19:28:56
+-- Dump completed on 2018-02-25 18:18:44

@@ -16,30 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `pc`
+-- Table structure for table `endereco`
 --
 
-DROP TABLE IF EXISTS `pc`;
+DROP TABLE IF EXISTS `endereco`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `pc` (
-  `produto_idproduto` int(11) NOT NULL,
-  `carrinho_idcarrinho` int(11) NOT NULL,
-  PRIMARY KEY (`produto_idproduto`,`carrinho_idcarrinho`),
-  KEY `fk_produto_has_carrinho_carrinho1_idx` (`carrinho_idcarrinho`),
-  KEY `fk_produto_has_carrinho_produto1_idx` (`produto_idproduto`),
-  CONSTRAINT `fk_produto_has_carrinho_carrinho1` FOREIGN KEY (`carrinho_idcarrinho`) REFERENCES `carrinho` (`idcarrinho`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_produto_has_carrinho_produto1` FOREIGN KEY (`produto_idproduto`) REFERENCES `produto` (`idproduto`) ON DELETE NO ACTION ON UPDATE NO ACTION
+CREATE TABLE `endereco` (
+  `idendereco` int(11) NOT NULL AUTO_INCREMENT,
+  `estado` varchar(2) NOT NULL,
+  `cidade` varchar(45) NOT NULL,
+  `bairro` varchar(45) NOT NULL,
+  `rua` varchar(45) NOT NULL,
+  `numero` varchar(10) NOT NULL,
+  `complemento` varchar(10) NOT NULL,
+  PRIMARY KEY (`idendereco`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `pc`
+-- Dumping data for table `endereco`
 --
 
-LOCK TABLES `pc` WRITE;
-/*!40000 ALTER TABLE `pc` DISABLE KEYS */;
-/*!40000 ALTER TABLE `pc` ENABLE KEYS */;
+LOCK TABLES `endereco` WRITE;
+/*!40000 ALTER TABLE `endereco` DISABLE KEYS */;
+/*!40000 ALTER TABLE `endereco` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -51,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-23 19:28:55
+-- Dump completed on 2018-02-25 18:18:44

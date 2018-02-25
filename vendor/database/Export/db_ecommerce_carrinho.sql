@@ -16,28 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `categoria`
+-- Table structure for table `carrinho`
 --
 
-DROP TABLE IF EXISTS `categoria`;
+DROP TABLE IF EXISTS `carrinho`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `categoria` (
-  `idcategoria` int(11) NOT NULL AUTO_INCREMENT,
-  `des_cat` varchar(256) DEFAULT NULL,
-  `dt_cad` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`idcategoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+CREATE TABLE `carrinho` (
+  `idcarrinho` int(11) NOT NULL AUTO_INCREMENT,
+  `des_sessao` varchar(45) NOT NULL,
+  `dt_carrinho` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `cliente_idcliente` int(11) NOT NULL,
+  PRIMARY KEY (`idcarrinho`),
+  KEY `fk_carrinho_cliente1_idx` (`cliente_idcliente`),
+  CONSTRAINT `fk_carrinho_cliente1` FOREIGN KEY (`cliente_idcliente`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='	';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `categoria`
+-- Dumping data for table `carrinho`
 --
 
-LOCK TABLES `categoria` WRITE;
-/*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
-INSERT INTO `categoria` VALUES (1,'Eletronico','2018-02-01 02:00:00'),(2,'Estofado','2018-02-01 02:00:00'),(3,'Esporte','2018-02-01 02:00:00');
-/*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
+LOCK TABLES `carrinho` WRITE;
+/*!40000 ALTER TABLE `carrinho` DISABLE KEYS */;
+/*!40000 ALTER TABLE `carrinho` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -49,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-23 19:28:55
+-- Dump completed on 2018-02-25 18:18:44

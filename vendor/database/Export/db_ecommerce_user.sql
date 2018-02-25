@@ -16,30 +16,38 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `pedido`
+-- Table structure for table `user`
 --
 
-DROP TABLE IF EXISTS `pedido`;
+DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `pedido` (
-  `idpedido` int(11) NOT NULL AUTO_INCREMENT,
-  `dt_pedido` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `status` varchar(45) NOT NULL,
-  `carrinho_idcarrinho` int(11) NOT NULL,
-  PRIMARY KEY (`idpedido`),
-  KEY `fk_pedido_carrinho1_idx` (`carrinho_idcarrinho`),
-  CONSTRAINT `fk_pedido_carrinho1` FOREIGN KEY (`carrinho_idcarrinho`) REFERENCES `carrinho` (`idcarrinho`) ON DELETE NO ACTION ON UPDATE NO ACTION
+CREATE TABLE `user` (
+  `iduser` int(11) NOT NULL AUTO_INCREMENT,
+  `nome` varchar(45) NOT NULL,
+  `sobrenome` varchar(45) NOT NULL,
+  `CPF` varchar(11) NOT NULL,
+  `email` varchar(45) NOT NULL,
+  `senha` varchar(45) NOT NULL,
+  `tel` varchar(15) DEFAULT NULL,
+  `dt_cad` timestamp NULL DEFAULT NULL,
+  `tipo_user` tinyint(4) NOT NULL,
+  `endereco_idendereco` int(11) NOT NULL,
+  PRIMARY KEY (`iduser`),
+  UNIQUE KEY `CPF_UNIQUE` (`CPF`),
+  UNIQUE KEY `dt_cad_UNIQUE` (`dt_cad`),
+  KEY `fk_cliente_endereco1_idx` (`endereco_idendereco`),
+  CONSTRAINT `fk_cliente_endereco1` FOREIGN KEY (`endereco_idendereco`) REFERENCES `endereco` (`idendereco`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `pedido`
+-- Dumping data for table `user`
 --
 
-LOCK TABLES `pedido` WRITE;
-/*!40000 ALTER TABLE `pedido` DISABLE KEYS */;
-/*!40000 ALTER TABLE `pedido` ENABLE KEYS */;
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -51,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-23 19:28:56
+-- Dump completed on 2018-02-25 18:18:44

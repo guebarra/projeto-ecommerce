@@ -8,7 +8,7 @@ $app->config('debug', true);
 
 $app->get('/select', function() {
     
-	$sql = new DB\Sql();
+	$sql = new Database\Sql();
 	$results = $sql->select("SELECT * FROM produto");
 
 	echo json_encode($results);
