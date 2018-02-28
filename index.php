@@ -2,17 +2,17 @@
 
 require_once("vendor/autoload.php");
 
-$app = new \Slim\Slim();
+use Classes\Page\Page;
+use Classes\DB\Sql;
+use Slim\Slim;
+
+$app = new Slim();
 
 $app->config('debug', true);
 
-$app->get('/select', function() {
-    
-	$sql = new DB\Sql();
-	$results = $sql->select("SELECT nome_prod, descricao FROM produto, categoria WHERE categoria.idcategoria = produto.categoria_idcategoria AND produto.categoria_idcategoria = 1");
-
-	echo json_encode($results);
-
+$app->get('/', function() {
+	$page = new Page();
+	$page->setTpl("teste");
 });
 
 $app->run();

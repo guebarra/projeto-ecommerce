@@ -1,6 +1,6 @@
 <?php 
 
-namespace DB;
+namespace classes\DB;
 
 class Sql{
 	private $conn;
