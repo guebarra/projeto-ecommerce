@@ -9,6 +9,7 @@ class Page{
 	private $tpl; //variável tpl, usada para tomar decições do framework TPL
 	private $dados = []; //array vazio que receberá as variáveis com chave "data"
 	private $empty = [ "data" => [] ]; //array vazio com chave data
+	private $aux;
 
 	public function __construct($d = array()){
 		$this->tpl = new Tpl();
@@ -40,8 +41,14 @@ class Page{
 
 	//atribui os valores passados pelo usuário a variável do RainTPL
 	public function assignData($d = array()){
-		foreach ($d as $key => $value) {
-			$this->tpl->assign($key, $value);
+		foreach ($d as $key => $value) { //para cada chave de d
+			if($key % 2 == 0){ //se for número par (nome das variáveis)
+				$this->aux = $value; //aux = valor
+				$value = $d[$key+1]; //valor = prox item do array
+				$key = $this->aux; //chave = aux
+				$d[$key] = $value; //array[aux] = prox item do array
+				$this->tpl->assign($key, $value); //faz o assign para o TPL reconhecer
+			}
 		}
 	}
 }

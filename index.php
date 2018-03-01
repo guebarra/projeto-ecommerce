@@ -12,7 +12,7 @@ $app->config('debug', true);
 
 $app->get('/', function() {
 	$page = new Page();
-	$page->setTpl("teste");
+	$page->setTpl("teste", array("nome", "marco", "sobrenome", "guebarra", "profissao", "programador"));
 });
 
 $app->run();
