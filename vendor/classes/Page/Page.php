@@ -11,13 +11,13 @@ class Page{
 	private $empty = [ "data" => [] ]; //array vazio com chave data
 	private $aux;
 
-	public function __construct($d = array()){
+	public function __construct($d = array(), $tpl_dir = "/views/"){
 		$this->tpl = new Tpl();
 
 		$this->dados = array_merge($this->empty, $d); //sobrescreve a variável data com os dados passados pelo usuário
 
 		$config = array(
-			"tpl_dir"       => $_SERVER["DOCUMENT_ROOT"]."/views/",
+			"tpl_dir"       => $_SERVER["DOCUMENT_ROOT"].$tpl_dir,
 			"cache_dir"     => $_SERVER["DOCUMENT_ROOT"]."/views-cache/",
 			"debug"         => false // set to false to improve the speed
 		);
