@@ -8,7 +8,11 @@ class Page{
 
 	private $tpl; //variável tpl, usada para tomar decições do framework TPL
 	private $dados = []; //array vazio que receberá as variáveis com chave "data"
-	private $empty = [ "data" => [] ]; //array vazio com chave data
+	private $empty = [
+		"header" => true,
+		"footer" => true,
+		"data" => []
+	]; //array vazio com chave data
 	private $aux;
 
 	public function __construct($d = array(), $tpl_dir = "/views/"){
@@ -27,7 +31,7 @@ class Page{
 		$this->assignData($this->dados["data"]);
 
 		//desenha a tela
-		$this->tpl->draw("header");
+		if($this->dados["header"]) $this->tpl->draw("header");
 	}
 
 	public function setTpl($name, $data = array()){
@@ -36,7 +40,7 @@ class Page{
 	}
 
 	public function __destruct(){
-		$this->tpl->draw("footer");
+		if($this->dados["footer"]) $this->tpl->draw("footer");
 	}
 
 	//atribui os valores passados pelo usuário a variável do RainTPL
