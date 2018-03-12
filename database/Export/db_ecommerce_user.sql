@@ -30,7 +30,7 @@ CREATE TABLE `user` (
   `email` varchar(45) NOT NULL,
   `senha` varchar(45) NOT NULL,
   `tel` varchar(15) DEFAULT NULL,
-  `dt_cad` timestamp NULL DEFAULT NULL,
+  `dt_cad` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `tipo_user` tinyint(4) NOT NULL,
   `endereco_idendereco` int(11) NOT NULL,
   PRIMARY KEY (`iduser`),
@@ -38,7 +38,7 @@ CREATE TABLE `user` (
   UNIQUE KEY `dt_cad_UNIQUE` (`dt_cad`),
   KEY `fk_cliente_endereco1_idx` (`endereco_idendereco`),
   CONSTRAINT `fk_cliente_endereco1` FOREIGN KEY (`endereco_idendereco`) REFERENCES `endereco` (`idendereco`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,6 +47,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,'Marco','Guebarra','00000000000','marco_vg.96@hotmail.com','admin','1291111111','2018-03-07 21:27:16',1,1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -59,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-25 18:18:44
+-- Dump completed on 2018-03-12 20:06:03
