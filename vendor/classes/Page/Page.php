@@ -46,13 +46,7 @@ class Page{
 	//atribui os valores passados pelo usuário a variável do RainTPL
 	public function assignData($d = array()){
 		foreach ($d as $key => $value) { //para cada chave de d
-			if($key % 2 == 0){ //se for número par (nome das variáveis)
-				$this->aux = $value; //aux = valor
-				$value = $d[$key+1]; //valor = prox item do array
-				$key = $this->aux; //chave = aux
-				$d[$key] = $value; //array[aux] = prox item do array
-				$this->tpl->assign($key, $value); //faz o assign para o TPL reconhecer
-			}
+			$this->tpl->assign($key, $value); //faz o assign para o TPL reconhecer
 		}
 	}
 }
