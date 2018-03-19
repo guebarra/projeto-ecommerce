@@ -26,28 +26,32 @@
         <form role="form" action="/admin/users/create" method="post">
           <div class="box-body">
             <div class="form-group">
-              <label for="desperson">Nome</label>
-              <input type="text" class="form-control" id="desperson" name="desperson" placeholder="Digite o nome">
+              <label for="nome">Nome</label>
+              <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite o nome">
             </div>
             <div class="form-group">
-              <label for="deslogin">Login</label>
-              <input type="text" class="form-control" id="deslogin" name="deslogin" placeholder="Digite o login">
+              <label for="sobrenome">Sobrenome</label>
+              <input type="text" class="form-control" id="sobrenome" name="sobrenome" placeholder="Digite o sobrenome">
             </div>
             <div class="form-group">
-              <label for="nrphone">Telefone</label>
-              <input type="tel" class="form-control" id="nrphone" name="nrphone" placeholder="Digite o telefone">
+              <label for="CPF">CPF</label>
+              <input type="text" class="form-control" id="CPF" name="CPF" placeholder="Digite o CPF">
             </div>
             <div class="form-group">
-              <label for="desemail">E-mail</label>
-              <input type="email" class="form-control" id="desemail" name="desemail" placeholder="Digite o e-mail">
+              <label for="email">E-mail</label>
+              <input type="text" class="form-control" id="email" name="email" placeholder="Digite o e-mail">
             </div>
             <div class="form-group">
-              <label for="despassword">Senha</label>
-              <input type="password" class="form-control" id="despassword" name="despassword" placeholder="Digite a senha">
+              <label for="senha">Senha</label>
+              <input type="password" class="form-control" id="senha" name="senha" placeholder="Digite a senha">
+            </div>
+            <div class="form-group">
+              <label for="tel">Telefone</label>
+              <input type="tel" class="form-control" id="tel" name="tel" placeholder="Digite o telefone">
             </div>
             <div class="checkbox">
               <label>
-                <input type="checkbox" name="inadmin" value="1"> Acesso de Administrador
+                <input type="checkbox" name="tipo_user" value="1"> Acesso de Administrador
               </label>
             </div>
           </div>

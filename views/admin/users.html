@@ -28,9 +28,12 @@
                   <tr>
                     <th style="width: 10px">#</th>
                     <th>Nome</th>
+                    <th>Sobrenome</th>
+                    <th>CPF</th>
                     <th>E-mail</th>
-                    <th>Login</th>
-                    <th style="width: 60px">Admin</th>
+                    <th>Senha</th>
+                    <th>Tel.</th>
+                    <th>Adm.</th>
                     <th style="width: 140px">&nbsp;</th>
                   </tr>
                 </thead>

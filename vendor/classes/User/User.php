@@ -10,7 +10,7 @@ class User extends Model{
 	
 	public static function login($email, $pass){
 		$sql = new Sql();
-		$result = $sql->select("SELECT * FROM user WHERE email = :EMAIL", [":EMAIL"=>$email]);
+		$result = $sql->select("SELECT * FROM user WHERE email = :EMAIL", [":EMAIL" => $email]);
 
 		if(count($result) == 0)
 			throw new \Exception("Usuário ou senha inválidos.");
@@ -46,6 +46,21 @@ class User extends Model{
 	public static function listAll(){
 		$sql = new Sql();
 		return $sql->select("SELECT * FROM user ORDER BY iduser");
+	}
+
+	public function save(){
+		$sql = new Sql();
+		$results = $sql->select("CALL save_user(:nome, :sobrenome, :CPF, :email, :senha, :tel, :tipo_user)", array(
+			":nome" => $this->getnome(),
+			":sobrenome" => $this->getsobrenome(),
+			":CPF" => $this->getCPF(),
+			":email" => $this->getemail(),
+			":senha" => $this->getsenha(),
+			":tel" => $this->gettel(),
+			":tipo_user" => $this->gettipo_user()
+		));
+
+		var_dump($results);
 	}
 }
 
