@@ -60,6 +60,26 @@ class User extends Model{
 			":tipo_user" => $this->gettipo_user()
 		));
 	}
+
+	public function get($iduser){
+		$sql = new Sql();
+		$results = $sql->select("SELECT * FROM user WHERE user.iduser = :ID", array(":ID" => $iduser));
+		$this->setData($results[0]);
+	}
+
+	public function update(){
+		$sql = new Sql();
+		$results = $sql->query("CALL update_user(:iduser :nome, :sobrenome, :CPF, :email, :senha, :tel, :tipo_user)", array(
+			":iduser" => $this->getiduser(),
+			":nome" => $this->getnome(),
+			":sobrenome" => $this->getsobrenome(),
+			":CPF" => $this->getCPF(),
+			":email" => $this->getemail(),
+			":senha" => $this->getsenha(),
+			":tel" => $this->gettel(),
+			":tipo_user" => $this->gettipo_user()
+		));
+	}
 }
 
  ?>

@@ -1,4 +1,4 @@
-<!-- Content Wrapper. Contains page content -->
+<?php if(!class_exists('Rain\Tpl')){exit;}?><!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -18,23 +18,23 @@
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form role="form" action="/admin/users/{$user.iduser}" method="post">
+        <form role="form" action="/admin/users/<?php echo htmlspecialchars( $user["iduser"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" method="post">
           <div class="box-body">
             <div class="form-group">
               <label for="nome">Nome</label>
-              <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite o nome" value="{$user.nome}">
+              <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite o nome" value="<?php echo htmlspecialchars( $user["nome"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
             </div>
             <div class="form-group">
               <label for="sobrenome">Sobrenome</label>
-              <input type="text" class="form-control" id="sobrenome" name="sobrenome" placeholder="Digite o sobrenome" value="{$user.sobrenome}">
+              <input type="text" class="form-control" id="sobrenome" name="sobrenome" placeholder="Digite o sobrenome" value="<?php echo htmlspecialchars( $user["sobrenome"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
             </div>
             <div class="form-group">
               <label for="CPF">CPF</label>
-              <input type="text" class="form-control" id="CPF" name="CPF" placeholder="Digite o CPF" value="{$user.CPF}">
+              <input type="text" class="form-control" id="CPF" name="CPF" placeholder="Digite o CPF" value="<?php echo htmlspecialchars( $user["CPF"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
             </div>
             <div class="form-group">
               <label for="email">E-mail</label>
-              <input type="text" class="form-control" id="email" name="email" placeholder="Digite o e-mail" value="{$user.email}">
+              <input type="text" class="form-control" id="email" name="email" placeholder="Digite o e-mail" value="<?php echo htmlspecialchars( $user["email"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
             </div>
             <div class="form-group">
               <label for="senha">Senha</label>
@@ -42,11 +42,11 @@
             </div>
             <div class="form-group">
               <label for="tel">Telefone</label>
-              <input type="tel" class="form-control" id="tel" name="tel" placeholder="Digite o telefone" value="{$user.tel}">
+              <input type="tel" class="form-control" id="tel" name="tel" placeholder="Digite o telefone" value="<?php echo htmlspecialchars( $user["tel"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
             </div>
             <div class="checkbox">
               <label>
-                <input type="checkbox" name="tipo_user" value="1" {if="$user.tipo_user == 1"}checked{/if}> Acesso de Administrador
+                <input type="checkbox" name="tipo_user" value="1" <?php if( $user["tipo_user"] == 1 ){ ?>checked<?php } ?>> Acesso de Administrador
               </label>
             </div>
           </div>
