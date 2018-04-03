@@ -11,7 +11,8 @@ class Sql{
 
 	public function setParam($stmt, $params = array()){
 		foreach ($params as $key => $value) {
-			$stmt->bindParam($key, $value);
+			echo $key.' => '.$value.'</br>';
+			$stmt->bindValue($key, $value);
 		}
 	}
 

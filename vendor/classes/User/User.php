@@ -50,7 +50,7 @@ class User extends Model{
 
 	public function save(){
 		$sql = new Sql();
-		$results = $sql->select("CALL save_user(:nome, :sobrenome, :CPF, :email, :senha, :tel, :tipo_user)", array(
+		$results = $sql->query("CALL save_user(:nome, :sobrenome, :CPF, :email, :senha, :tel, :tipo_user)", array(
 			":nome" => $this->getnome(),
 			":sobrenome" => $this->getsobrenome(),
 			":CPF" => $this->getCPF(),
@@ -59,8 +59,6 @@ class User extends Model{
 			":tel" => $this->gettel(),
 			":tipo_user" => $this->gettipo_user()
 		));
-
-		var_dump($results);
 	}
 }
 
