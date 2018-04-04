@@ -69,7 +69,15 @@ class User extends Model{
 
 	public function update(){
 		$sql = new Sql();
-		$results = $sql->query("CALL update_user(:iduser :nome, :sobrenome, :CPF, :email, :senha, :tel, :tipo_user)", array(
+		$results = $sql->query("UPDATE user SET
+				nome = :nome,
+		        sobrenome = :sobrenome,
+		        CPF = :CPF,
+		        email = :email,
+		        senha = :senha,
+		        tel = :tel,
+	        	tipo_user = :tipo_user
+        	WHERE user.iduser = :iduser", array(
 			":iduser" => $this->getiduser(),
 			":nome" => $this->getnome(),
 			":sobrenome" => $this->getsobrenome(),
@@ -79,6 +87,11 @@ class User extends Model{
 			":tel" => $this->gettel(),
 			":tipo_user" => $this->gettipo_user()
 		));
+	}
+
+	public function delete($id){
+		$sql = new Sql();
+		$sql->query("DELETE FROM user WHERE iduser = :id", array(":id" => $id));
 	}
 }
 
