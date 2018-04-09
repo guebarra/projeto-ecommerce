@@ -17,7 +17,7 @@ class User extends Model{
 
 		$data = $result[0];
 
-		if($pass == $data["senha"]){
+		if(password_verify($pass, $data["senha"]) /*$pass == $data["senha"]*/){
 			$user = new User();
 			$user->setData($data);
 
@@ -26,7 +26,9 @@ class User extends Model{
 			return $user;
 		}
 		else {
-			throw new \Exception("Usuário ou senha inválidos.");
+			var_dump($data["senha"]);
+			var_dump(password_hash($pass, PASSWORD_BCRYPT));
+			throw new \Exception("Usuário ou senha inválidos!");
 			
 		}
 	}

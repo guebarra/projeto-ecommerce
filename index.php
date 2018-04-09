@@ -74,6 +74,7 @@ $app->post('/admin/users/create', function(){
 	User::verifyLogin();
 	$user = new User();
 	$_POST["tipo_user"] = (isset($_POST["tipo_user"]))?1:0;
+	$_POST["senha"] = password_hash($_POST["senha"], PASSWORD_BCRYPT);
 	$user->setData($_POST);
 	$user->save();
 	header("Location: /admin/users");
