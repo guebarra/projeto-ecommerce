@@ -86,11 +86,21 @@ $app->post('/admin/users/:iduser', function($iduser) {
 	$user = new User();
 	$user->get((int)$iduser);
 	$_POST["tipo_user"] = (isset($_POST["tipo_user"]))?1:0;
+	$_POST["senha"] = password_hash($_POST["senha"], PASSWORD_BCRYPT);
 	$user->setData($_POST);
 	$user->update();
 	header("Location: /admin/users");
 	exit;
 });
+
+$app->get('/admin/forgot', function(){
+	$page = new PageAdmin(["header" => false, "footer" => false]);
+	$page->setTpl("forgot");
+});
+
+$app->post('/admin/forgot', function(){
+	$user = User::getForgot($_POST["email"]);
+})
 
 $app->run();
 

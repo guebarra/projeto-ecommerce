@@ -17,7 +17,7 @@ class User extends Model{
 
 		$data = $result[0];
 
-		if(password_verify($pass, $data["senha"]) /*$pass == $data["senha"]*/){
+		if(password_verify($pass, $data["senha"])){
 			$user = new User();
 			$user->setData($data);
 
@@ -52,15 +52,27 @@ class User extends Model{
 
 	public function save(){
 		$sql = new Sql();
-		$results = $sql->query("CALL save_user(:nome, :sobrenome, :CPF, :email, :senha, :tel, :tipo_user)", array(
-			":nome" => $this->getnome(),
-			":sobrenome" => $this->getsobrenome(),
-			":CPF" => $this->getCPF(),
-			":email" => $this->getemail(),
-			":senha" => $this->getsenha(),
-			":tel" => $this->gettel(),
-			":tipo_user" => $this->gettipo_user()
-		));
+
+		$results = $sql->select("SELECT * FROM user WHERE user.CPF = :CPF",
+			array(":CPF" => $this->getCPF())
+		);
+
+		if(isset($results[0])){
+			throw new \Exception("CPF já cadastrado!");
+		}
+		else{
+			$results = $sql->select("CALL save_user(:nome, :sobrenome, :CPF, :email, :senha, :tel, :tipo_user)", array(
+				":nome" => $this->getnome(),
+				":sobrenome" => $this->getsobrenome(),
+				":CPF" => $this->getCPF(),
+				":email" => $this->getemail(),
+				":senha" => $this->getsenha(),
+				":tel" => $this->gettel(),
+				":tipo_user" => $this->gettipo_user()
+			));
+		}
+
+		$this->setData($results[0]);
 	}
 
 	public function get($iduser){
@@ -94,6 +106,11 @@ class User extends Model{
 	public function delete($id){
 		$sql = new Sql();
 		$sql->query("DELETE FROM user WHERE iduser = :id", array(":id" => $id));
+	}
+
+	public static function getForgot($email){
+		$sql = new Sql();
+		$sql->select("SELECT * FROM user WHERE user.email = :email", array(":email" => $email));
 	}
 }
 
