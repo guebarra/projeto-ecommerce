@@ -31,7 +31,6 @@
                     <th>Sobrenome</th>
                     <th>CPF</th>
                     <th>E-mail</th>
-                    <th>Senha</th>
                     <th>Tel.</th>
                     <th>Adm.</th>
                     <th style="width: 140px">&nbsp;</th>
@@ -45,7 +44,6 @@
                     <td><?php echo htmlspecialchars( $value1["sobrenome"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
                     <td><?php echo htmlspecialchars( $value1["CPF"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td/>
                     <td><?php echo htmlspecialchars( $value1["email"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td/>
-                    <td><?php echo htmlspecialchars( $value1["senha"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td/>
                     <td><?php echo htmlspecialchars( $value1["tel"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td/>
                     <td><?php if( $value1["tipo_user"] == 1 ){ ?>Sim<?php }else{ ?>Não<?php } ?></td>
                     <td>

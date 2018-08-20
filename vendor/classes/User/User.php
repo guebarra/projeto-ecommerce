@@ -9,7 +9,9 @@ class User extends Model{
 
 	const SESSION = "User";
 	const SECRET = "HcodePhp7_Secret";
-	
+	const CIFRA = "AES-256-CBC";
+	const IV = "0123456789123456";
+
 	public static function login($email, $pass){
 		$sql = new Sql();
 		$result = $sql->select("SELECT * FROM user WHERE email = :EMAIL", [":EMAIL" => $email]);
@@ -112,20 +114,20 @@ class User extends Model{
 
 	public static function getForgot($email){
 		$sql = new Sql();
-		$result = $sql->select("CALL sp_recovery_password (:email)",
-								array(":email" => $email));
+		$result = $sql->select("SELECT * FROM user WHERE email = :email", array(":email"=>$email));
 
 		if(count($result) == 0){
 			throw new \Exception("Não foi possível recuperar a senha.");
 		}
 		else{
 			$data = $result[0];
-			$cifra =  'AES-256-CBC';
 
-			//$chave =  random_bytes(32);
-			$iv = random_bytes(openssl_cipher_iv_length($cifra)); 
+			$sql->select("CALL sp_recovery_password (:iduser)", array(
+				":iduser" =>$data["iduser"]
+			)); 
 
-			$code = base64_encode(openssl_encrypt($data["iduser"], $cifra, User::SECRET, OPENSSL_RAW_DATA, $iv));
+			$code = base64_encode(openssl_encrypt($data["iduser"], User::CIFRA, User::SECRET, 0,
+				User::IV));
 
 			$link = "http://www.ecommerce.com.br/admin/forgot/reset?code=$code";
 
@@ -137,9 +139,46 @@ class User extends Model{
 	}
 
 	public static function validForgotDecrypt($code){
-		$idrecovery = openssl_decrypt(base64_decode($code), $cifra, User::SECRET, OPENSSL_RAW_DATA, $iv);
+		$idrecovery = openssl_decrypt(base64_decode($code), User::CIFRA, User::SECRET, 0,
+			User::IV);
 
+		$sql = new Sql();
 
+		$result = $sql->select("
+			SELECT *
+			FROM senha_recuperada a
+			INNER JOIN user b USING (iduser)
+			WHERE a.iduser  = :idrecovery
+			AND a.dtrecovery IS NULL
+			AND DATE_ADD(a.dtregister, INTERVAL 1 HOUR) >= NOW();
+		", array(
+			":idrecovery"=>$idrecovery
+		));
+
+		if(count($result) == 0){
+			throw new \Exception("Não foi possível recuperar a senha");
+			
+		}
+
+		else {
+			return $result[0];
+		}
+	}
+
+	public static function setForgotUsed($idRecovery){
+		$sql = new Sql();
+		$sql->query("UPDATE senha_recuperada SET dtrecovery = NOW() WHERE iduser = :idrecovery", array(
+			":idrecovery"=>$idRecovery
+		));
+
+	}
+
+	public function setPassword($password){
+		$sql = new Sql();
+		$sql->query("UPDATE user SET senha = :password WHERE iduser = :iduser", array(
+			":password" => $password,
+			":iduser" => $this->getiduser()
+		));
 	}
 }
 
