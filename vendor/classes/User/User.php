@@ -3,10 +3,12 @@
 namespace Classes\User;
 use Classes\DB\Sql;
 use Classes\Model;
+use Classes\Mailer;
 
 class User extends Model{
 
 	const SESSION = "User";
+	const SECRET = "HcodePhp7_Secret";
 	
 	public static function login($email, $pass){
 		$sql = new Sql();
@@ -110,7 +112,34 @@ class User extends Model{
 
 	public static function getForgot($email){
 		$sql = new Sql();
-		$sql->select("SELECT * FROM user WHERE user.email = :email", array(":email" => $email));
+		$result = $sql->select("CALL sp_recovery_password (:email)",
+								array(":email" => $email));
+
+		if(count($result) == 0){
+			throw new \Exception("Não foi possível recuperar a senha.");
+		}
+		else{
+			$data = $result[0];
+			$cifra =  'AES-256-CBC';
+
+			//$chave =  random_bytes(32);
+			$iv = random_bytes(openssl_cipher_iv_length($cifra)); 
+
+			$code = base64_encode(openssl_encrypt($data["iduser"], $cifra, User::SECRET, OPENSSL_RAW_DATA, $iv));
+
+			$link = "http://www.ecommerce.com.br/admin/forgot/reset?code=$code";
+
+			$mailer = new Mailer($data["email"], $data["nome"], "Redefinir Senha E-commerce",
+				"forgot", array("name" => $data["nome"], "link" => $link));
+
+			$mailer->send();
+		}
+	}
+
+	public static function validForgotDecrypt($code){
+		$idrecovery = openssl_decrypt(base64_decode($code), $cifra, User::SECRET, OPENSSL_RAW_DATA, $iv);
+
+
 	}
 }
 

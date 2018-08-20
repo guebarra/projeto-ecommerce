@@ -16,7 +16,6 @@ class Page{
 	private $aux;
 
 	public function __construct($d = array(), $tpl_dir = "/views/"){
-		$this->tpl = new Tpl();
 
 		$this->dados = array_merge($this->empty, $d); //sobrescreve a variável data com os dados passados pelo usuário
 
@@ -27,6 +26,8 @@ class Page{
 		);
 
 		Tpl::configure($config); //configura o RainTPL (padrão)
+
+		$this->tpl = new Tpl();
 
 		$this->assignData($this->dados["data"]);
 
