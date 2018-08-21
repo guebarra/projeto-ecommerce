@@ -13,7 +13,7 @@ class Model {
 
 		switch ($method) {
 			case 'get':
-				return $this->values[$att];
+				return (isset($this->values[$att])) ? $this->values[$att] : NULL;
 				break;
 
 			case 'set':
