@@ -12,6 +12,16 @@ class Product extends Model{
 		return $sql->select("SELECT * FROM produto ORDER BY desproduct");
 	}
 
+	public static function checkList($list){
+		foreach ($list as &$row) {
+			$p = new Product();
+			$p->setData($row);
+			$row = $p->getData();
+		}
+
+		return $list;
+	}
+
 	public function save(){
 		$sql = new Sql();
 
@@ -102,6 +112,24 @@ class Product extends Model{
 		imagedestroy($image);
 
 		$this->checkPhoto();
+	}
+
+	public function getFromURL($url){
+		$sql = new Sql();
+
+		$rows = $sql->select("SELECT * FROM produto WHERE desurl = :url LIMIT 1", [
+			':url' => $url
+		]);
+
+		$this->setData($rows[0]);
+	}
+
+	public function getCategories(){
+		$sql = new Sql();
+
+		return $sql->select("SELECT * FROM categoria a INNER JOIN categoria_produto b ON a.idcategory = b.idcategory WHERE b.idproduct = :idproduct", [
+			':idproduct' => $this->getidproduct()
+		]);
 	}
 }
 
