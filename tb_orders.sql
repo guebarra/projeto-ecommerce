@@ -9,24 +9,30 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-DROP TABLE IF EXISTS tb_carts;
+DROP TABLE IF EXISTS pedido;
 
-CREATE TABLE `tb_carts` (
-  `idcart` int(11) NOT NULL AUTO_INCREMENT,
-  `dessessionid` varchar(64) NOT NULL,
-  `iduser` int(11) DEFAULT NULL,
-  `deszipcode` char(8) DEFAULT NULL,
-  `vlfreight` decimal(10,2) DEFAULT NULL,
-  `nrdays` int(11) DEFAULT NULL,
+CREATE TABLE `pedido` (
+  `idorder` int(11) NOT NULL AUTO_INCREMENT,
+  `idcart` int(11) NOT NULL,
+  `iduser` int(11) NOT NULL,
+  `idstatus` int(11) NOT NULL,
+  `idaddress` int(11) NOT NULL,
+  `vltotal` decimal(10,2) NOT NULL,
   `dtregister` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`idcart`),
-  KEY `FK_carts_users_idx` (`iduser`),
-  CONSTRAINT `fk_carts_users` FOREIGN KEY (`iduser`) REFERENCES `tb_users` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  PRIMARY KEY (`idorder`),
+  KEY `FK_orders_users_idx` (`iduser`),
+  KEY `fk_orders_ordersstatus_idx` (`idstatus`),
+  KEY `fk_orders_carts_idx` (`idcart`),
+  KEY `fk_orders_addresses_idx` (`idaddress`),
+  CONSTRAINT `fk_orders_addresses` FOREIGN KEY (`idaddress`) REFERENCES `endereco` (`idaddress`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_orders_carts` FOREIGN KEY (`idcart`) REFERENCES `carrinho` (`idcart`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_orders_ordersstatus` FOREIGN KEY (`idstatus`) REFERENCES `status_pedido` (`idstatus`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_orders_users` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-LOCK TABLES `tb_carts` WRITE;
-/*!40000 ALTER TABLE `tb_carts` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_carts` ENABLE KEYS */;
+LOCK TABLES `pedido` WRITE;
+/*!40000 ALTER TABLE `pedido` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
