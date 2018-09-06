@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Classes\User;
 use Classes\DB\Sql;
@@ -34,7 +34,7 @@ class User extends Model{
 			//não está logado
 			return false;
 		} else {
-			if($inadmin === true && (bool)$_SESSION[User::SESSION]['inadmin'] === true){
+			if($inadmin === true && (bool)$_SESSION[User::SESSION]['tipo_user'] === true){
 				return true;
 			} else if($inadmin === false){
 				return true;
@@ -62,7 +62,7 @@ class User extends Model{
 		}
 		else {
 			throw new \Exception("Usuário ou senha inválidos!");
-			
+
 		}
 	}
 
@@ -149,7 +149,7 @@ class User extends Model{
 
 			$sql->select("CALL sp_recovery_password (:iduser)", array(
 				":iduser" =>$data["iduser"]
-			)); 
+			));
 
 			$code = base64_encode(openssl_encrypt($data["iduser"], User::CIFRA, User::SECRET, 0, User::IV));
 
@@ -276,6 +276,23 @@ class User extends Model{
 		]);
 
 		return (count($results) > 0);
+	}
+
+	public function getOrders(){
+		$sql = new Sql();
+
+		$results = $sql->select("SELECT *
+			FROM pedido a
+			INNER JOIN status_pedido b USING (idstatus)
+			INNER JOIN carrinho c USING (idcart)
+			INNER JOIN user d ON d.iduser = a.iduser
+			INNER JOIN endereco e USING (idaddress)
+			WHERE a.iduser = :iduser", [
+				":iduser"=>$this->getiduser()
+			]
+		);
+
+		return $results;
 	}
 }
 

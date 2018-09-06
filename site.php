@@ -25,7 +25,7 @@ $app->get('/categories/:idcategory', function($idcategory) {
 	$pagination = $category->getProductsPage($page);
 	$pages = [];
 
-	for ($i=1; $i <= $pagination['pages']; $i++) { 
+	for ($i=1; $i <= $pagination['pages']; $i++) {
 		array_push($pages, [
 			'link'=>'/categories/'.$category->getidcategory().'?page='.$i,
 			'page'=>$i
@@ -71,7 +71,7 @@ $app->get('/cart/:idproduct/add', function($idproduct) {
 	$product->get((int)$idproduct);
 	$qtd = (isset($_GET['qtd'])) ? (int)$_GET['qtd'] : 1;
 
-	for ($i=0; $i < $qtd ; $i++) { 
+	for ($i=0; $i < $qtd ; $i++) {
 		$cart->addProduct($product);
 	}
 
@@ -213,7 +213,7 @@ $app->post("/checkout", function(){
 
 	$cart = Cart::getFromSession();
 
-	$totals = $cart->getCalculateTotal();
+	$cart->getCalculateTotal();
 
 	$order = new Order();
 
@@ -222,7 +222,7 @@ $app->post("/checkout", function(){
 		'idaddress'=>$address->getidaddress(),
 		'iduser'=>$user->getiduser(),
 		'idstatus'=>OrderStatus::EM_ABERTO,
-		'vltotal'=>$totals['vlprice'] + $cart->getvlfreight()
+		'vltotal'=>$cart->getvltotal()
 	]);
 
 	$order->save();
@@ -404,7 +404,7 @@ $app->post('/profile', function(){
 		exit;
 	}
 
-	$user = User::getFromSession();	
+	$user = User::getFromSession();
 
 	if($_POST['email'] !== $user->getemail()){
 		if (User::checkLoginExists($_POST['email'])){
@@ -418,7 +418,7 @@ $app->post('/profile', function(){
 	$_POST['tipo_user'] = $user->gettipo_user();
 	$_POST['senha'] = $user->getsenha();
 	$_POST['CPF'] = $user->getCPF();
-	
+
 	$user->setData($_POST);
 	$user->update();
 
@@ -452,9 +452,11 @@ $app->get("/boleto/:idorder", function($idorder){
 	// DADOS DO BOLETO PARA O SEU CLIENTE
 	$dias_de_prazo_para_pagamento = 10;
 	$taxa_boleto = 5.00;
-	$data_venc = date("d/m/Y", time() + ($dias_de_prazo_para_pagamento * 86400));  // Prazo de X dias OU informe data: "13/04/2006"; 
+	$data_venc = date("d/m/Y", time() + ($dias_de_prazo_para_pagamento * 86400));  // Prazo de X dias OU informe data: "13/04/2006";
 	$valor_cobrado = formatPrice($order->getvltotal()); // Valor - REGRA: Sem pontos na milhar e tanto faz com "." ou "," ou com 1 ou 2 ou sem casa decimal
+	$valor_cobrado = str_replace(".", "",$valor_cobrado);
 	$valor_cobrado = str_replace(",", ".",$valor_cobrado);
+
 	$valor_boleto=number_format($valor_cobrado+$taxa_boleto, 2, ',', '');
 
 	$dadosboleto["nosso_numero"] = $order->getidorder();  // Nosso numero - REGRA: Máximo de 8 caracteres!
@@ -481,7 +483,7 @@ $app->get("/boleto/:idorder", function($idorder){
 	// DADOS OPCIONAIS DE ACORDO COM O BANCO OU CLIENTE
 	$dadosboleto["quantidade"] = "";
 	$dadosboleto["valor_unitario"] = "";
-	$dadosboleto["aceite"] = "";		
+	$dadosboleto["aceite"] = "";
 	$dadosboleto["especie"] = "R$";
 	$dadosboleto["especie_doc"] = "";
 
@@ -509,6 +511,102 @@ $app->get("/boleto/:idorder", function($idorder){
 
 	require_once($path.'funcoes_itau.php');
 	require_once($path.'layout_itau.php');
+});
+
+$app->get('/profile/orders', function(){
+	User::verifyLogin(false);
+
+	$page = new Page();
+	$user = User::getFromSession();
+
+	$page->setTpl("profile-orders", [
+		'orders'=>$user->getOrders()
+	]);
+
+});
+
+$app->get('/profile/orders/:idorder', function($idorder){
+	User::verifyLogin(false);
+
+	$page = new Page();
+	$order = new Order();
+	$cart = new Cart();
+
+	$order->get((int)$idorder);
+
+	$cart->get((int)$order->getidcart());
+
+	$cart->getCalculateTotal();
+
+	$page->setTpl("profile-orders-detail", [
+		'order'=>$order->getData(),
+		'cart'=>$cart->getData(),
+		'products'=>$cart->getProducts()
+	]);
+
+});
+
+$app->get('/profile/change-password', function(){
+	User::verifyLogin(false);
+
+	$page = new Page();
+
+	$page->setTpl("profile-change-password", [
+		'changePassError'=>User::getError(),
+		'changePassSuccess'=>User::getSuccess()
+	]);
+
+});
+
+$app->post('/profile/change-password', function(){
+	User::verifyLogin(false);
+
+	if(!isset($_POST['current_pass']) || $_POST['current_pass'] === ''){
+		User::setError("Digite a senha atual.");
+
+		header("Location: /profile/change-password");
+		exit;
+	}
+
+	if(!isset($_POST['new_pass']) || $_POST['new_pass'] === ''){
+		User::setError("Digite a nova senha.");
+
+		header("Location: /profile/change-password");
+		exit;
+	}
+
+	if(!isset($_POST['new_pass_confirm']) || $_POST['new_pass_confirm'] === ''){
+		User::setError("Confirme a nova senha.");
+
+		header("Location: /profile/change-password");
+		exit;
+	}
+
+	if(!isset($_POST['current_pass']) === $_POST['new_pass']){
+		User::setError("Sua nova senha deve ser diferente da atual.");
+
+		header("Location: /profile/change-password");
+		exit;
+	}
+
+	$user = User::getFromSession();
+
+	if(!password_verify($_POST['current_pass'], $user->getsenha())){
+		User::setError("Senha inválida.");
+
+		header("Location: /profile/change-password");
+		exit;
+	}
+
+	$user->setsenha(User::getPasswordHash($_POST['new_pass']));
+
+	$user->update();
+
+	User::setSuccess("Senha alterada com sucesso!");
+
+	header("Location: /profile/change-password");
+	exit;
+
 });
 
 ?>
