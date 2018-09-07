@@ -3,11 +3,11 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    Lista de Categorias
+    Lista de Usuários
   </h1>
   <ol class="breadcrumb">
     <li><a href="/admin"><i class="fa fa-dashboard"></i> Home</a></li>
-    <li class="active"><a href="/admin/categories">Categorias</a></li>
+    <li class="active"><a href="/admin/users">Usuários</a></li>
   </ol>
 </section>
 
@@ -19,9 +19,9 @@
   		<div class="box box-primary">
             
             <div class="box-header">
-              <a href="/admin/categories/create" class="btn btn-success">Cadastrar Categoria</a>
+              <a href="/admin/users/create" class="btn btn-success">Cadastrar Usuário</a>
               <div class="box-tools">
-                <form action="/admin/categories">
+                <form action="/admin/users">
                   <div class="input-group input-group-sm" style="width: 150px;">
                     <input type="text" name="search" class="form-control pull-right" placeholder="Search" value="{$search}">
                     <div class="input-group-btn">
@@ -37,19 +37,24 @@
                 <thead>
                   <tr>
                     <th style="width: 10px">#</th>
-                    <th>Nome da Categoria</th>
-                    <th style="width: 240px">&nbsp;</th>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Login</th>
+                    <th style="width: 60px">Admin</th>
+                    <th style="width: 140px">&nbsp;</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {loop="$categories"}
+                  {loop="$users"}
                   <tr>
-                    <td>{$value.idcategory}</td>
-                    <td>{$value.descategory}</td>
+                    <td>{$value.iduser}</td>
+                    <td>{$value.desperson}</td>
+                    <td>{$value.desemail}</td>
+                    <td>{$value.deslogin}</td/>
+                    <td>{if="$value.inadmin == 1"}Sim{else}Não{/if}</td>
                     <td>
-                      <a href="/admin/categories/{$value.idcategory}/products" class="btn btn-default btn-xs"><i class="fa fa-edit"></i> Produtos</a>
-                      <a href="/admin/categories/{$value.idcategory}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Editar</a>
-                      <a href="/admin/categories/{$value.idcategory}/delete" onclick="return confirm('Deseja realmente excluir este registro?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Excluir</a>
+                      <a href="/admin/users/{$value.iduser}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Editar</a>
+                      <a href="/admin/users/{$value.iduser}/delete" onclick="return confirm('Deseja realmente excluir este registro?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Excluir</a>
                     </td>
                   </tr>
                   {/loop}

@@ -106,6 +106,62 @@ class Order extends Model{
 	public static function clearSuccess(){
 		$_SESSION[Order::SUCCESS] = NULL;
 	}
+
+	public static function getOrdersPage($page = 1, $itemsPerPage = 10){
+		$sql = new Sql();
+
+		$start = ($page - 1) * $itemsPerPage;
+
+		$results = $sql->select("
+			SELECT SQL_CALC_FOUND_ROWS *
+			FROM pedido a
+			INNER JOIN status_pedido b USING (idstatus)
+			INNER JOIN carrinho c USING (idcart)
+			INNER JOIN user d ON d.iduser = a.iduser
+			INNER JOIN endereco e USING (idaddress)
+			ORDER BY a.dtregister DESC
+			LIMIT $start, $itemsPerPage;
+		");
+
+		$resultTotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal");
+
+		return [
+			'data' => $results,
+			'total' => (int)$resultTotal[0]["nrtotal"],
+			'pages' => ceil($resultTotal[0]["nrtotal"] / $itemsPerPage)
+		];
+	}
+
+	public static function getSearch($search, $page = 1, $itemsPerPage = 10){
+		$sql = new Sql();
+
+		$start = ($page - 1) * $itemsPerPage;
+
+		$results = $sql->select("
+			SELECT SQL_CALC_FOUND_ROWS *
+			FROM pedido a
+			INNER JOIN status_pedido b USING (idstatus)
+			INNER JOIN carrinho c USING (idcart)
+			INNER JOIN user d ON d.iduser = a.iduser
+			INNER JOIN endereco e USING (idaddress)
+			WHERE a.idorder = :id
+			OR d.nome LIKE :search
+			OR d.sobrenome LIKE :search
+			ORDER BY a.dtregister DESC
+			LIMIT $start, $itemsPerPage;
+		", [
+			':search'=>'%'.$search.'%',
+			':id'=>$search
+		]);
+
+		$resultTotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal");
+
+		return [
+			'data' => $results,
+			'total' => (int)$resultTotal[0]["nrtotal"],
+			'pages' => ceil($resultTotal[0]["nrtotal"] / $itemsPerPage)
+		];
+	}
 }
 
  ?>

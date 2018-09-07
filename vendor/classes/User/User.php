@@ -294,6 +294,53 @@ class User extends Model{
 
 		return $results;
 	}
+
+	public static function getUsersPage($page = 1, $itemsPerPage = 10){
+		$sql = new Sql();
+
+		$start = ($page - 1) * $itemsPerPage;
+
+		$results = $sql->select("
+			SELECT SQL_CALC_FOUND_ROWS *
+			FROM user
+			ORDER BY iduser
+			LIMIT $start, $itemsPerPage;
+		");
+
+		$resultTotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal");
+
+		return [
+			'data' => $results,
+			'total' => (int)$resultTotal[0]["nrtotal"],
+			'pages' => ceil($resultTotal[0]["nrtotal"] / $itemsPerPage)
+		];
+	}
+
+	public static function getSearch($search, $page = 1, $itemsPerPage = 10){
+		$sql = new Sql();
+
+		$start = ($page - 1) * $itemsPerPage;
+
+		$results = $sql->select("
+			SELECT SQL_CALC_FOUND_ROWS *
+			FROM user
+			WHERE nome LIKE :search
+			OR sobrenome LIKE :search
+			OR email = :search
+			ORDER BY iduser
+			LIMIT $start, $itemsPerPage;
+		", [
+			':search'=>'%'.$search.'%'
+		]);
+
+		$resultTotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal");
+
+		return [
+			'data' => $results,
+			'total' => (int)$resultTotal[0]["nrtotal"],
+			'pages' => ceil($resultTotal[0]["nrtotal"] / $itemsPerPage)
+		];
+	}
 }
 
  ?>
